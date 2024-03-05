@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,12 +43,29 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WtdScreen() {
-    val data by rememberSaveable { mutableStateOf((1..10).toMutableList()) }
+    var data by rememberSaveable { mutableStateOf((1..10).toList()) }
+
+    val onAddClicked = {
+        data = data.toMutableList().apply {
+            add(data.size + 1)
+        }
+    }
+
+    val onRemoveClicked = {
+        data = data.toMutableList().apply {
+            if (isNotEmpty())
+                removeLast()
+        }
+    }
+
+    val onClearClicked = {
+        data = mutableListOf()
+    }
 
     Column() {
         Title("Wanted Challenge")
-        ActionButtonList()
-        ItemList()
+        ActionButtonList(onAddClicked, onRemoveClicked, onClearClicked)
+        ItemList(data)
     }
 
 }
@@ -67,29 +86,33 @@ fun Title(name: String) {
 }
 
 @Composable
-fun ActionButtonList() {
+fun ActionButtonList(
+    onAddClicked: () -> Unit,
+    onRemoveClicked: () -> Unit,
+    onClearClicked: () -> Unit
+) {
     Row {
-        ActionButton("추가", Color.Gray)
-        ActionButton("삭제", Color.Red)
-        ActionButton("초기화", Color.Green)
+        ActionButton("추가", Color.Gray, onAddClicked)
+        ActionButton("삭제", Color.Red, onRemoveClicked)
+        ActionButton("초기화", Color.Green, onClearClicked)
     }
 }
 
 @Composable
-fun ActionButton(text: String, backgroundColor: Color) {
+fun ActionButton(text: String, backgroundColor: Color, onClicked: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(100.dp)
             .background(backgroundColor)
+            .clickable { onClicked() }
     ) {
         Text(text = text, fontSize = 24.sp)
     }
 }
 
 @Composable
-fun ItemList() {
-    val data = (1..10).toList()
+fun ItemList(data: List<Int>) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
