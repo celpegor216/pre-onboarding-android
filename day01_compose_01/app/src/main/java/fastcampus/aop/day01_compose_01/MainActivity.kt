@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,7 +44,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WtdScreen() {
-    var data by rememberSaveable { mutableStateOf((1..10).toList()) }
+    val initialData = (1..10).toList()
+    var data by rememberSaveable { mutableStateOf(listOf<Int>()) }
 
     val onAddClicked = {
         data = data.toMutableList().apply {
@@ -60,6 +62,11 @@ fun WtdScreen() {
 
     val onClearClicked = {
         data = mutableListOf()
+    }
+
+    // Screen이 보여지는 시점에 새로 설정됨
+    LaunchedEffect(Unit) {
+        data = initialData
     }
 
     Column() {
