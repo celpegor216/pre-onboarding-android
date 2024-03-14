@@ -24,7 +24,7 @@ fun MainScreen() {
             Button(onClick = { viewModel.addProduct(product()) }) {
                 Text(text = "add new product")
             }
-            Button(onClick = { viewModel.deleteProduct() }) {
+            Button(onClick = { viewModel.removeLastProduct() }) {
                 Text(text = "remove first product")
             }
         }

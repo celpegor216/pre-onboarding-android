@@ -7,27 +7,33 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import wanted.pre_onboarding.hands_on_2.DependenciesProvider
 import wanted.pre_onboarding.hands_on_2.domain.model.Product
-import wanted.pre_onboarding.hands_on_2.domain.ProductRepository
+import wanted.pre_onboarding.hands_on_2.domain.usecase.AddProductUseCase
+import wanted.pre_onboarding.hands_on_2.domain.usecase.GetProductsUseCase
+import wanted.pre_onboarding.hands_on_2.domain.usecase.LoadProductAllUseCase
+import wanted.pre_onboarding.hands_on_2.domain.usecase.RemoveLastProductUseCase
 
 class MainViewModel(
-    private val productRepository: ProductRepository = DependenciesProvider.productRepository
+    getProductsUseCase: GetProductsUseCase = DependenciesProvider.getProductsUseCase,
+    private val loadProductAllUseCase: LoadProductAllUseCase = DependenciesProvider.loadProductAllUseCase,
+    private val addProductUseCase: AddProductUseCase = DependenciesProvider.addProductUseCase,
+    private val removeLastProductUseCase: RemoveLastProductUseCase = DependenciesProvider.removeLastProductUseCase
 ): ViewModel() {
 
-    val products = productRepository.products.stateIn(
+    val products = getProductsUseCase().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         emptyList()
     )
 
     fun loadProductAll() = viewModelScope.launch {
-        productRepository.loadProductAll()
+        loadProductAllUseCase()
     }
 
     fun addProduct(product: Product) = viewModelScope.launch {
-        productRepository.addProduct(product)
+        addProductUseCase(product)
     }
 
-    fun deleteProduct() = viewModelScope.launch {
-        productRepository.removeLastProduct()
+    fun removeLastProduct() = viewModelScope.launch {
+        removeLastProductUseCase()
     }
 }

@@ -102,8 +102,41 @@
 
 - DomainModel 생성
   - DataModel의 데이터 샘플 이전
-  - DataModel과 상호 변환 가능한 함수 생성
+  - DataModel과 상호 변환 가능한 함수(Mapper) 생성
 - DomainModel와 DataSource 연결
+
+</div>
+</details>
+
+<details>
+<summary><b>6. UseCase 생성 및 연결</b></summary>
+<div markdown="1">
+
+</br>
+
+![image07](./README_image/image07.png)
+
+- UseCase 생성
+- `DependenciesProvider`를 통해 Repositroy를 UseCase에 주입
+- UseCase와 ViewModel 연결
+
+</div>
+</details>
+
+<details>
+<summary><b>7. 최종 패키지 구조</b></summary>
+<div markdown="1">
+
+</br>
+
+![image08](./README_image/image08.png)
+
+- View, ViewModel, UseCase, Repository, DataSource, Mapper로 아키텍처 구성
+- View는 ViewModel의 상태를 구독하고, 함수를 호출
+- ViewModel은 View를 모르고, UseCase를 통해서 데이터 접근 및 수정
+- UseCase는 ViewModel을 모르고, Repository를 통해서 데이터 접근 및 수정
+- Repository는 UseCase를 모르고, DataSource를 통해서 데이터 접근 및 수정
+- DataSource는 Repository를 모르고, 내부적으로 상태와 함수를 구현
 
 </div>
 </details>
