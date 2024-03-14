@@ -91,3 +91,19 @@
 
 </div>
 </details>
+
+<details>
+<summary><b>5. DomainModel 생성 및 연결</b></summary>
+<div markdown="1">
+
+</br>
+
+![image06](./README_image/image06.png)
+
+- DomainModel 생성
+  - DataModel의 데이터 샘플 이전
+  - DataModel과 상호 변환 가능한 함수 생성
+- DomainModel와 DataSource 연결
+
+</div>
+</details>
