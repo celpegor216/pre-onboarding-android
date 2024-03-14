@@ -8,6 +8,298 @@ Wanted 프리온보딩 Android 챌린지(2024년 3월, Modern Android 훑어보�
 
 ## 역량 향상 세션
 
+### 03/11(월): Clean Architecture
+
+<details>
+<summary><b>0. 소프트웨어 아키텍처란?</b></summary>
+<div markdown="1">
+
+</br>
+
+- 소프트웨어 시스템을 추론하기 위해 필요한 구조들의 모임이며, 그러한 시스템과 구조를 만드는데 필요한 규율
+- 즉, 구성 요소와 생성 방법의 모임
+- 소프트웨어 시스템의 구조
+
+  ![image01](./README_day03_image/image01.png)
+
+  - 시스템 기획 및 뼈대 생성
+  - 클래스, 인터페이스 생성
+  - 내부 함수 정의
+  - 클래스, 인터페이스 간 요소를 사용하거나 상속, 구현하는 등 관계 형성
+
+</div>
+</details>
+
+<details>
+<summary><b>1. 좋은 소프트웨어 아키텍처를 만드는 방법</b></summary>
+<div markdown="1">
+
+</br>
+
+- 좋은 소프트웨어 아키텍처란?
+  - 소프트웨어 본연의 목표(사용자가 원하는 기능을 제공하고, 하드웨어와 달리 기능의 변화에 따라 유연하게 변경되는 것)를 최소한의 비용으로 가능하게 하는 구성 요소 및 규칙의 모임
+  - 즉, 지속적으로 변화가 가능한 구조여야 함 = 함수, 클래스, 컴포넌트를 변경하기 쉽게 작성해야 함
+- **함수** 구현 방법론
+  - Clean Code, Effective Kotlin 등 서적에 소개되는 좋은 코드에 대한 이론을 바탕으로 함수를 작성
+- **클래스** 구현 방법론: SOLID
+
+  - Uncle Bob이 제안하는 클래스 구현 방법론
+  - **변경, 이해, 재사용**이 쉬운 클래스를 목표로 함
+  - **Single Responsibility Principle / 단일 책임 원칙**
+    - 모든 클래스는 변경에 대해 오직 하나의 이유를 가져야 함
+    - 즉, 상호작용하는 대상(실제 조직 내 이해관계자)이 단일 대상이어야 함
+    - 기능이 추가되거나 수정됐을 때 변경 부분을 최소화하는 것을 목표로, 조직이 소통하는 단위에 맞춰 클래스를 분리
+    - Ex. User 클래스에 유저 인증 개발자, 유저 통계 개발자가 상호작용 한다면 User 클래스에 모든 기능을 포함시키지 않고 AuthManager, AnalyticsReporter로 나누어서 관리
+  - **Open-Closed Principle / 개방-폐쇄 원칙**
+    - 개체가 수행하는 기능은 확장이 가능해야 하고, 개체 자체의 변경은 불가능해야 함
+    - 즉, 개체와 개체의 기능 구현을 분리하고 개체가 기능을 직접 참조하지 않아야 함
+    - 일반적으로 추상 클래스 또는 인터페이스를 활용한 추상화 적용, 구현체가 참조하는 객체를 모르는 것이 포인트
+    - 과거와 현재 조직의 업무 경험을 기반으로 변경될 부분을 예측해서 추상화하고, 그 외에 고객의 요구사항이 있을 때 추가적으로 적용하는 것을 권장함
+    - 모듈 차원에서도 적용 가능한 법칙
+    - Ex. Data 모듈이 Domain 모듈을 참조하는 반면 Domain 모듈은 Data 모듈을 모른다면, Data 모듈이 수정되어도 Domain 모듈은 변경할 필요 없음
+  - **Liskov Substitution Principle / 리스코프 치환 원칙**
+    - 하위 클래스는 상위 클래스의 역할을 그대로 수행할 수 있어야 함
+    - 즉, 하위 클래스가 상위 클래스의 역할 수행 과정에서 예외를 발생시키거나 행위를 변경시키면 안 됨
+    - 상위 클래스를 설계할 때 중간 클래스를 생성해 구분하거나, 인터페이스로 기능을 분리하는 방법을 적용
+    - 모듈 차원에서도 적용 가능한 법칙
+    - Ex. Network 모듈을 구현하는(상속받는) 모든 모듈은 대체되었을 때 문제가 없어야 함
+  - **Interface Segregation Principle / 인터페이스 분리 원칙**
+    - 이용하지 않는 메소드에 의존하지 않아야 함(의존 == 영향 받을 수 있음)
+    - 즉, 의존하는 범위를 최소화해서 외부 변경으로부터 포호해야 함
+    - 내가 변경한 코드가 어디까지 의존하는지 찾아가는 것 자체가 코스트 + 실수의 여지 발생
+    - 따라서 애초에 의존 범위를 제한해서 서로 연관이 없음을 분명히 하는 것이 중요함
+    - 모듈 차원에서도 적용 가능한 법칙
+    - Ex. A 모듈이 다양한 기능을 가지고 있고 B 모듈이 A 모듈의 일부만 필요해서 A 모듈을 사용할 경우, 사용하지 않는 다른 기능들이 변경되었을 때 B가 영향을 받는지 확인해야 하기 때문에 좋지 않음
+  - **Dependency Inversion Principle / 의존성 역전 원칙**
+
+    - 변동성을 기준으로 경계를 긋고, 변동성이 큰 하위 계층이 변동석이 작은 상위 계층을 의존하게 해야 함
+    - 컴포넌트를 나누는 경계에서 제어 흐름과 의존 흐름을 역전시키는 핵심 요소
+    - Ex. UseCase가 RepositoryImpl을 직접 참조할 경우, RepositoryImpl이 변경될 때마다 UseCase를 확인해야 함 (X)
+    - Ex. UseCase와 RepositoryImpl 사이에 둘 다 의존하는 Repository를 추가하여 제어 흐름은 UseCase에서 RepositoryImpl으로 유지한 채, 의존 방향을 Repository로 변경하여 RepositoryImpl과 UseCase의 의존 관계를 변경 (O)
+
+    ![image02](./README_day03_image/image02.png)
+
+  > [SOLID 예제 실습](./day03_clean_architecture/hands-on-01.kt)
+
+- **컴포넌트** 구성 방법론
+
+  - 컴포넌트: 한 번에 배포가 가능한 클래스의 그룹(Android에서는 Gradle 모듈을 의미)
+  - 배포는 비용이 많이 드는 행위이기 때문에, 어느 모듈의 변경으로 인해 모든 모듈을 재배포해야 하는 아키텍처는 좋지 않음
+  - 컴포넌트를 정의하고 나눌 때 응집도는 높이고 결합도는 낮춰야 함
+  - **응집도를 높이는 방법**
+
+    - 응집도: 하나의 컴포넌트에 포함된 클래스, 함수, 데이터들이 밀접하게 연관된 정도
+    - Reuse / Release Equivalence Principle : 재사용 / 릴리스 등가 원칙
+      - 재사용 가능한 컴포넌트는 릴리즈 단위와 같음
+      - 즉, 모듈을 구성했을 때 모듈의 모든 코드는 배포 시점과 버전이 같고, 동일한 릴리즈로 추적 관리 되어야 하며, 동일한 릴리즈 문서에 포함되어야 함
+    - Common Closure Principle: 공통 폐쇄 원칙
+      - 동일한 이유로 동일한 시점에 변경되는 클래스를 같은 컴포넌트로 묶어야 함
+      - SOLID의 SRP, OCP의 컴포넌트 버전: 컴포넌트와 상호작용하는 대상의 범위를 좁히고 해당 대상을 주제로 컴포넌트를 모음, 컴포넌트 간 분리와 추상화된 연결을 통해 기능은 확장하고 변경은 막음
+    - Common Reuse Principle: 공통 재사용 원칙
+      - 컴포넌트가 필요하지 않는 것에 의존하면 안 됨
+      - SOLID의 ISP의 컴포넌트 버전: 컴포넌트의 일부만 사용하고 대부분은 사용하지 않는다면 분리를 고려해야 함
+
+  - **결합도를 낮추는 방법**
+    - 결합도: 하나의 컴포넌트가 다른 컴포넌트에 의존하는 정도
+    - Acyclic Dependencies Principle : 의존성 비순환 원칙
+      - 컴포넌트 의존성 그래프에 순환이 있어서는 안 됨
+      - 순환이 존재한다면 하나의 컴포넌트가 변경되었을 때 순환하는 모든 컴포넌트에 영향이 미치기 때문
+    - Stable Dependencies Principle : 안정된 의존성 원칙
+      - 덜 안전된 컴포넌트가 안전된 컴포넌트에 의존해야 함
+      - 안정되다 == 변경이 적다
+    - Stable Abstractions Principle : 안정된 추상화 원칙
+      - 컴포넌트는 안정된 정도만큼 추상화되어야 함
+
+</div>
+</details>
+
+<details>
+<summary><b>2. Clean Architecture란?</b></summary>
+<div markdown="1">
+
+</br>
+
+- 아키텍처의 패턴화 및 역사
+
+  - 수 십년간 함수, 클래스들을 어떻게 구성해야 하는지에 대한 패턴화 시도가 있었음
+  - 대표적으로 패턴화된 아키텍처
+    - Hexagonal Architecture
+    - DCI(Data, Context and Interaction)
+    - BCE(Boundary Control Entity)
+  - 공통 특성
+    - 관심사 분리
+    - 프레임워크 독립성
+    - 시스템 UI 독립성
+    - 데이터베이스 독립성
+    - 모든 외부 에이전시에 대한 독립성
+    - 각 계층이 서로 분리되어 테스트 용이
+
+- Clean Architecture 개념
+
+  - 기존의 아키텍처로부터 영감을 받아 Uncle Bob이 제안하는 아키텍처 패턴
+  - 시스템을 여러 원으로 나누고, 변경이 많은 바깥 원이 변경이 적은 안쪽 원을 의존하게 하여 변경이 전파되지 않게 함
+  - 4개의 계층으로 구분했으나 이는 예시일 뿐, 더 많은/적은 원을 사용해도 상관 없음
+  - 중요한 것은 의존성의 방향을 밖 -> 안으로 유지하고, 안쪽으로 갈수록 더욱 추상화되고 높은 수준의 정책으로 구성하는 것
+
+- Clean Architecture 발전 과정
+
+  1. 최초의 앱
+
+  ![image03](./README_day03_image/image03.png)
+
+  - 여기저기에 컴포넌트를 개발하고 컴포넌트 간 호출을 통해 기능을 구현함
+  - 별도의 규칙 없이 기능을 추가하여, 하나의 컴포넌트가 변경되었을 때 다른 모든 컴포넌트를 변경해야 하는 문제가 발생함
+
+  2. 외부 레이어와 내부 레이어 분리
+
+  ![image04](./README_day03_image/image04.png)
+
+  - 변경이 많이 일어나는 부분(외부 레이어)과 적게 일어나는 부분(내부 레이어)을 분리하여 관리하기 시작함
+  - 불필요한 변경을 방어하기 위해, 외부 레이어에서 내부 레이어를 의존하도록 함
+  - 변경의 전파는 방어했으나 내부 레이어에서 외부 레이어를 호출할 수 없는 문제가 발생함
+
+  3. 인터페이스 주입 활용
+
+  ![image05](./README_day03_image/image05.png)
+
+  - 내부 레이어에 인터페이스로 자신이 호출하려는 행위를 추상화해서 사용
+  - 외부 레이어는 내부 레이어에서 정의한 인터페이스에 맞게 행위를 정의
+
+  4. 인터페이스가 적용된 형태
+
+  ![image06](./README_day03_image/image06.png)
+
+  - 내부에서 자체적으로 규칙을 정의하고, 외부에서 이를 사용함
+  - 이러한 방식으로, 변경의 빈도에 따라 컴포넌트를 다수의 레이어로 나누어 관리하게 됨
+
+- Clean Architecture 구조
+
+  ![image07](./README_day03_image/image07.png)
+
+  - **Enterprise Business Rules**
+    - 구성 요소: Entity
+    - 회사의 비즈니스 로직을 설명하는 개념을 캡슐화(전사적 로직)
+    - 외부 의존 없이 순수하게 데이터와 행위 기반으로 정의해야 함
+    - Ex. AccountEntity에 계좌번호, 잔액 등 데이터와 출금, 입금 함수를 포함시킴
+  - **Application Business Rules**
+    - 구성 요소: UseCase
+    - 앱에서 발생하는 비즈니스 로직을 캡슐화(시스템 로직)
+    - Entity는 알아도 되지만, 외부 원의 컴포넌트는 알면 안 됨
+    - Ex. LoginUseCase에 은행 앱 로그인 프로세스에 대한 로직을 포함시킴
+  - **Interface Adapters**
+    - 구성 요소: Controllers, Gateways, Presenters
+    - 비즈니스 로직(UseCase)과 UI, Web, DB 등 외부 에이전시를 연결해서 기능을 제어
+    - UseCase는 알아도 되지만, 외부 원의 컴포넌트는 알면 안 됨
+    - Ex. AuthViewModel에서 LoginUseCase를 이용해 로그인 처리 함수를 구현하고, 이를 AuthView가 사용
+  - **Frameworks & Drivers**
+    - 구성 요소: UI, Web, DB, Devices, External Interfaces
+    - 프레임워크 및 도구의 모임
+    - 가장 바깥에 위치하여 변경이 발생해도 내부에 영향을 미치지 않음
+    - Ex. DB, Web Framework, Android Framework 등
+  - **경계 횡단**
+    - Controller가 UseCase를 호출하고 UseCase는 Presenter를 호출할 경우, 전자는 문제가 없지만 후자는 외부 계층을 모르기 때문에 직접 호출할 수 없음
+    - 이를 위해 DIP를 적용해서 UseCase가 속한 원에 원하는 행동을 정의한 인터페이스를 생성 -> UseCase는 이 인터페이스를 기준으로 비즈니스 로직을 구현하고, Presenter는 이 인터페이스를 구현해서 내부 원의 로직 수행
+
+</div>
+</details>
+
+<details>
+<summary><b>3. Android의 Clean Architecture</b></summary>
+<div markdown="1">
+
+</br>
+
+![image08](./README_day03_image/image08.png)
+
+- 버튼을 클릭해서 Product 목록을 불러오는 예시에서의 계층 이동 과정
+
+  1. View에서 클릭이 발생하여 Presentation에 Product 목록 불러오기를 요청
+  2. Presentation은 Domain 레이어의 규칙에 따라 Product 목록을 요청
+  3. Domain은 정의된 규칙에 따라 내부적으로 Product 요청을 호출
+  4. 필요에 따라 외부 Adapter(Database, Network 등) 호출을 위한 인터페이스 호출
+  5. 요청의 응답을 View로 전달
+
+- 레이어 별 실제 클래스 구성
+
+  - **Presentation Layer**
+    - View: Activity, Fragment
+    - Presentation: Presenter, ViewModel
+  - **Domain Layer**
+    - Domain: UseCase(재사용 가능한 로직 단위), Repository, Domain Model
+  - **Data Layer**
+    - Data: RepositoryImpl(Class)
+    - Database: Database DataSource
+    - Network: Network DataSource
+    - Ect: Mapper, Data Model
+
+- Presentation Architecture
+
+  - Presentation: View와 로직을 연결, 데이터를 이용해 View를 보여주는 것
+  - **MV**
+
+    ![image09](./README_day03_image/image09.png)
+
+    - View가 Model(데이터)을 직접 참조해서 기능을 수행
+    - Model이 변경되었을 때 의존하는 모든 View가 변경되어야 하는 문제가 발생함
+
+  - **MVC**
+
+    ![image10](./README_day03_image/image10.png)
+
+    - 변경의 전파를 막기 위해 Controller를 중계자로 추가함
+    - 모든 Input(이벤트)가 Controller로 전달되고, Controller가 View와 Model을 이용해 기능을 수행함
+    - Model이 바뀌어도 Controller만 수정하면 됨
+    - 그러나 Controller 내부에서 View와 Model이 밀접하게 결합되어 코드의 재사용이 어려워지고, Controller가 과도하게 거대해지는 문제가 발생함
+
+  - **MVP**
+
+    ![image11](./README_day03_image/image11.png)
+
+    - View와 Model의 결합을 끊기 위해 Controller를 없애고 Presenter를 추가
+    - 모든 Input은 View가 처리하고, 이를 Presenter로 보내서 내부적으로 Model과 비즈니스 로직을 수행한 값을 받아옴
+    - View와 Model의 결합은 줄어들었으나, View와 Presenter의 결합이 증가하는 문제가 발생함
+
+  - **MVVM**
+
+    ![image12](./README_day03_image/image12.png)
+
+    - View와 Presenter의 결합을 끊기 위해 Observer Pattern 적용
+    - View는 ViewModel을 알고, 함수를 호출하거나 상태값에 대한 구독을 수행함
+    - ViewModel은 View를 모르고, 자신의 상태값과 비즈니스 로직 구현에만 집중함
+
+- Repository Pattern
+
+  ![image13](./README_day03_image/image13.png)
+
+  - 데이터에 대한 접근 및 처리를 실제 인프라와 분리하여 추상화하는 패턴
+  - Domain Layer에는 Repository Interface로 Data Layer에서 수행해야 하는 행위만 정의
+  - Data Layer에는 RepositoryImpl Class로 정의된 행위를 구현
+  - 이를 통해 Domain Layer에서 실제 프레임워크에 대한 구현 없이 Data Layer의 로직을 작성할 수 있음
+
+- Mapper
+
+  ![image14](./README_day03_image/image14.png)
+
+  - Domain Model: Domain 내부에서 사용하는 모델
+  - Data Model: Database Schema나 Network API 스펙을 정의하기 위한 모델
+  - Domain Model은 Data Model이 어떻게 변하든 일관되게 비즈니스 로직을 표현해야 함
+  - 이를 위해, Mapper를 사용하여 Data Model을 Domain Model로 변경하여 사용
+
+- 예제
+  - [실습 코드](https://github.com/celpegor216/pre-onboarding-android/tree/main/day03_clean_architecture/hands_on_2)
+  - 본 예제는 각 컴포넌트를 쪼개서 세팅하는데 의미가 있고, 실제로 컴포넌트 별 차이를 설명하는데는 한계가 있음
+  - 중요한 것은 컴포넌트가 각자의 역할에 집중해서 로직을 응집하고 의존성을 최소화하는 것
+  - UseCase는 비지니스 로직을 Domain 로직으로만 구현: 추상화된 객체만으로 서술하고, 단일 목적으로 작성 -> 재사용이 쉬움
+  - Repository는 DataSource를 이용해서 데이터를 처리하는 규칙에 집중: DataSource에서 데이터를 가져와서 필요 시 캐싱/필터링 규칙을 적용
+  - DataSource는 실제 인프라 레벨의 Database나 Network의 자체 기능에 집중: DB나 Network 관련 기능은 모두 DataSource 내부에서만 작업
+
+</div>
+</details>
+
+</br>
+</br>
+</br>
+
 ### 03/07(목): Coroutine
 
 <details>
