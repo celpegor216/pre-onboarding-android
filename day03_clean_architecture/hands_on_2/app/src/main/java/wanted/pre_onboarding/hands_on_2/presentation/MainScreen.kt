@@ -6,24 +6,30 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import wanted.pre_onboarding.hands_on_2.data.model.PRODUCTS_SAMPLE
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import wanted.pre_onboarding.hands_on_2.data.model.product
 
 @Composable
 fun MainScreen() {
+    val viewModel = viewModel<MainViewModel>()
+    val products by viewModel.products.collectAsStateWithLifecycle()
+
     Column {
         Column {
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { viewModel.loadProductAll() }) {
                 Text(text = "load product")
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { viewModel.addProduct(product()) }) {
                 Text(text = "add new product")
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { viewModel.deleteProduct() }) {
                 Text(text = "remove first product")
             }
         }
         LazyColumn {
-            items(PRODUCTS_SAMPLE) {
+            items(products) {
                 Text(text = it.name)
             }
         }

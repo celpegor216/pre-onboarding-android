@@ -66,4 +66,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Compose에서의 ViewModel 사용을 편하게 해주기 위한 라이브러리
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    // collectAsStateWithLifecycle을 사용하기 위한 라이브러리
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 }
