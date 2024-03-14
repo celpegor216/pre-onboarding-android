@@ -1,27 +1,33 @@
 package wanted.pre_onboarding.hands_on_2.presentation
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.update
-import wanted.pre_onboarding.hands_on_2.data.model.PRODUCTS_SAMPLE
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import wanted.pre_onboarding.hands_on_2.DependenciesProvider
 import wanted.pre_onboarding.hands_on_2.data.model.Product
+import wanted.pre_onboarding.hands_on_2.domain.ProductRepository
 
-class MainViewModel: ViewModel() {
+class MainViewModel(
+    private val productRepository: ProductRepository = DependenciesProvider.productRepository
+): ViewModel() {
 
-    private val _products = MutableStateFlow(emptyList<Product>())
-    val products = _products.asStateFlow()
+    val products = productRepository.products.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
 
-    fun loadProductAll() {
-        _products.update { PRODUCTS_SAMPLE }
+    fun loadProductAll() = viewModelScope.launch {
+        productRepository.loadProductAll()
     }
 
-    fun addProduct(product: Product) {
-        _products.getAndUpdate { it + product }
+    fun addProduct(product: Product) = viewModelScope.launch {
+        productRepository.addProduct(product)
     }
 
-    fun deleteProduct() {
-        _products.getAndUpdate { it.dropLast(1) }
+    fun deleteProduct() = viewModelScope.launch {
+        productRepository.removeLastProduct()
     }
 }

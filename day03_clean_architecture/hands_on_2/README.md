@@ -55,3 +55,22 @@
 
 </div>
 </details>
+
+<details>
+<summary><b>3. Repository 생성 및 연결</b></summary>
+<div markdown="1">
+
+</br>
+
+![image04](./README_image/image04.png)
+
+- Repository 생성
+  - ViewModel의 상태(products) 및 관련 함수 이전
+  - 인터페이스는 Domain Layer, 구현체는 Data Layer
+- Repository ViewModel 연결
+  - DI를 위해 전역 객체 관리 도구(`DependenciesProvider`) 생성
+  - Repository를 ViewModel에 주입해서 상태 및 관련 함수 연결
+  - stateIn으로 Flow -> StateFlow 변경해 구독
+
+</div>
+</details>
