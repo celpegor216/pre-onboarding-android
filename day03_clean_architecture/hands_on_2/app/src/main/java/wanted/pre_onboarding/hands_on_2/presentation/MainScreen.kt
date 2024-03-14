@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import wanted.pre_onboarding.hands_on_2.data.model.product
+import wanted.pre_onboarding.hands_on_2.domain.model.product
 
 @Composable
 fun MainScreen() {

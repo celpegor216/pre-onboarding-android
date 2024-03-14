@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import wanted.pre_onboarding.hands_on_2.DependenciesProvider
-import wanted.pre_onboarding.hands_on_2.data.model.Product
+import wanted.pre_onboarding.hands_on_2.domain.model.Product
 import wanted.pre_onboarding.hands_on_2.domain.ProductRepository
 
 class MainViewModel(

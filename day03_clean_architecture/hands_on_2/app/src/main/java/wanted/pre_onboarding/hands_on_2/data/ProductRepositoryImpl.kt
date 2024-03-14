@@ -1,28 +1,24 @@
 package wanted.pre_onboarding.hands_on_2.data
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.update
-import wanted.pre_onboarding.hands_on_2.data.model.PRODUCTS_SAMPLE
-import wanted.pre_onboarding.hands_on_2.data.model.Product
+import wanted.pre_onboarding.hands_on_2.domain.model.Product
 import wanted.pre_onboarding.hands_on_2.domain.ProductRepository
 
-class ProductRepositoryImpl: ProductRepository {
+class ProductRepositoryImpl(
+    private val productDataSource: ProductDataSource
+): ProductRepository {
 
-    private val _products = MutableStateFlow(emptyList<Product>())
-    override val products: Flow<List<Product>> = _products.asStateFlow()
+    override val products: Flow<List<Product>> = productDataSource.products
 
     override suspend fun loadProductAll() {
-        _products.update { PRODUCTS_SAMPLE }
+        productDataSource.loadProductAll()
     }
 
     override suspend fun addProduct(product: Product) {
-        _products.getAndUpdate { it + product }
+        productDataSource.addProduct(product)
     }
 
     override suspend fun removeLastProduct() {
-        _products.getAndUpdate { it.dropLast(1) }
+        productDataSource.removeLastProduct()
     }
 }

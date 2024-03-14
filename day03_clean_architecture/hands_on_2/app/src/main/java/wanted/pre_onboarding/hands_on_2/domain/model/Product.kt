@@ -1,4 +1,4 @@
-package wanted.pre_onboarding.hands_on_2.data.model
+package wanted.pre_onboarding.hands_on_2.domain.model
 
 import kotlin.random.Random
 

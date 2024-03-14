@@ -1,9 +1,9 @@
-package wanted.pre_onboarding.hands_on_2.domain
+package wanted.pre_onboarding.hands_on_2.data
 
 import kotlinx.coroutines.flow.Flow
 import wanted.pre_onboarding.hands_on_2.domain.model.Product
 
-interface ProductRepository {
+interface ProductDataSource {
     val products: Flow<List<Product>>
 
     suspend fun loadProductAll()

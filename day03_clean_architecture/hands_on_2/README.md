@@ -74,3 +74,20 @@
 
 </div>
 </details>
+
+<details>
+<summary><b>4. DataSource 생성 및 연결</b></summary>
+<div markdown="1">
+
+</br>
+
+![image05](./README_image/image05.png)
+
+- DataSource 생성
+  - Repository의 상태(products) 및 관련 함수 이전
+  - 인터페이스와 구현체 모두 Data Layer
+- DataSource와 Repository 연결
+  - `DependenciesProvider`를 통해 DataSource를 Repositroy에 주입하고 상태 및 관련 함수 연결
+
+</div>
+</details>
